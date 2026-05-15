@@ -1,0 +1,18 @@
+$kind: http-request
+name: /tasks
+url: http://localhost:8080/tasks
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": 5,\r
+
+    \    \"title\": \"clean-up\",\r
+
+    \    \"description\": \"use the mop\",\r
+
+    \    \"done\": false\r
+
+    }"
+order: 2000

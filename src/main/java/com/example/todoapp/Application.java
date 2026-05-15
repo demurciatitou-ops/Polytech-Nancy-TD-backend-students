@@ -8,10 +8,14 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.Boolean.parseBoolean;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.nonNull;
 
@@ -34,10 +38,23 @@ public class Application {
         log.info("HTTP server started on http://localhost:8080");
     }
 
+    private static void sendResponse(HttpExchange exchange, int status, String json) throws IOException {
+        if(nonNull(json)) {
+            exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+            byte[] bytes = json.getBytes(UTF_8);
+            exchange.sendResponseHeaders(status, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
+        } else {
+            exchange.sendResponseHeaders(status, 0);
+            exchange.close();
+        }
+    }
+
     private static void handleTasks(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
-
         //region Manage POST /tasks
         if ("POST".equals(method) && "/tasks".equals(path)) {
             Task input = JsonUtils.deserialize(new String(exchange.getRequestBody().readAllBytes(), UTF_8), Task.class);
@@ -64,21 +81,54 @@ public class Application {
         }
         //endregion
 
+        //region Manage GET /tasks
+        if ("GET".equals(method) && "/tasks".equals(path)) {
+            Map<String, String> params = parseQuery(exchange.getRequestURI().getQuery());
+            if (params.get("todo") == null){
+                sendResponse(exchange, 404, "missing argument");
+                return;
+            }
+            else {
+                List<Task> tasks = dao.getAll(Boolean.parseBoolean(params.get("todo")));
+                sendResponse(exchange, 200, JsonUtils.serialize(tasks));
+                return;
+            }
+        }
+        //endregion
+
+        //region Manage DELETE/tasks/{id}
+        if ("DELETE".equals(method) && m.matches()) {
+            int id = Integer.parseInt(m.group(1));
+            Optional<Task> deletedTask = dao.delete(id);
+
+            if (deletedTask.isPresent()) {
+                sendResponse(exchange, 200, JsonUtils.serialize(deletedTask.get()));
+            } else {
+                sendResponse(exchange, 404, null);
+            }
+            return;
+        }
+        //endregion
+
         // Otherwise → 404
         sendResponse(exchange, 404, null);
     }
 
-    private static void sendResponse(HttpExchange exchange, int status, String json) throws IOException {
-        if(nonNull(json)) {
-            exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
-            byte[] bytes = json.getBytes(UTF_8);
-            exchange.sendResponseHeaders(status, bytes.length);
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(bytes);
-            }
-        } else {
-            exchange.sendResponseHeaders(status, 0);
-            exchange.close();
+    public static Map<String, String> parseQuery(String query) {
+        Map<String, String> params = new HashMap<>();
+
+        if (query == null) return params;
+
+        for (String pair : query.split("&")) {
+            String[] kv = pair.split("=");
+
+            String key = kv[0];
+            String value = kv.length > 1 ? kv[1] : "";
+
+            params.put(key, value);
         }
+
+        return params;
     }
 }
+

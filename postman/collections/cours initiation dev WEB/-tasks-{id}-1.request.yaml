@@ -1,0 +1,5 @@
+$kind: http-request
+name: /tasks/{id}
+url: http://localhost:8080/tasks/1
+method: DELETE
+order: 5000
