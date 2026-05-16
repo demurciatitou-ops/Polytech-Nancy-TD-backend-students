@@ -110,6 +110,24 @@ public class Application {
         }
         //endregion
 
+        if ("PUT".equals(method) && m.matches()){
+            int id = Integer.parseInt((m.group(1)));
+            Task input = JsonUtils.deserialize(new String(exchange.getRequestBody().readAllBytes(), UTF_8), Task.class);
+
+            if (dao.findById(id).isPresent()){
+                Optional<Task> result = dao.modify(input, id);
+                if (result.isPresent()){
+                    sendResponse(exchange, 200, JsonUtils.serialize(result.get()));
+                }
+                else{
+                    sendResponse(exchange, 404, null);
+                }
+            }
+            else{
+                sendResponse(exchange, 204, null);
+            }
+        }
+
         // Otherwise → 404
         sendResponse(exchange, 404, null);
     }

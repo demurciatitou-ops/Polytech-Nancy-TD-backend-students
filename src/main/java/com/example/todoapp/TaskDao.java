@@ -43,7 +43,7 @@ public class TaskDao {
         List<Task> result = new ArrayList<>();
         if (todo == true) {
             for (Task task : this.storage.values()) {
-                if (task.getDone() == false) { // la tâche n'a pas encore était
+                if (task.done() == false) { // la tâche n'a pas encore était
                     result.add(task);
                 }
             }
@@ -54,5 +54,15 @@ public class TaskDao {
             }
         }
         return result;
+    }
+
+    public Optional<Task> modify(Task newTask, int id){
+        if (this.storage.get(id) == null){
+            return Optional.empty();
+        }
+        else {
+            this.storage.put(id, newTask);
+            return Optional.ofNullable(newTask);
+        }
     }
 }

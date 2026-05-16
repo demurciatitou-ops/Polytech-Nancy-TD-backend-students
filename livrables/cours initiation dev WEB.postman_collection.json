@@ -79,7 +79,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    Integer: 4,\r\n    title: \"clean-up\",\r\n    description: \"use the mop\"\r\n    done: false\r\n}",
+          "raw": "{\r\n    \"Integer\": \"4\",\r\n    \"title\": \"clean-up\",\r\n    \"description\": \"use the mop\",\r\n    \"done\": false\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -95,6 +95,35 @@
           "port": "8080",
           "path": [
             "tasks"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/tasks/{id}",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"clean-up\",\r\n    \"description\": \"use the mop\",\r\n    \"done\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/tasks/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "tasks",
+            "1"
           ]
         }
       },
