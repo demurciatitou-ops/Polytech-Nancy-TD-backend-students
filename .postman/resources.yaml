@@ -1,0 +1,15 @@
+# Use this workspace to collaborate
+workspace:
+  id: d8c11125-67af-43fc-845f-f1add5b0ccb9
+
+localResources:
+  collections:
+    - ..\livrables\cours_initiation_dev_WEB.postman_collection.json
+  specs:
+    - ..\livrables\swagger.yaml
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ..\postman\collections\cours initiation dev WEB: 5a8f40fd-8548-4faa-946c-45fb2c603bb4

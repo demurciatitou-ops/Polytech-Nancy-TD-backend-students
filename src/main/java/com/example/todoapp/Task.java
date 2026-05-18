@@ -8,4 +8,5 @@ package com.example.todoapp;
  * @param done          task accomplishment status (false by default)
  */
 public record Task(Integer id, String title, String description, boolean done) {
+
 }

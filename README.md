@@ -27,7 +27,7 @@ Contrôler vos versions
 Liens :
 - https://jdk.java.net/java-se-ri/21 (téléchargement JDK)
 - https://maven.apache.org/download.cgi (téléchargement Maven)
-- https://github.com/join (compte Github Maven)
+- https://github.com/join (compte Github)
 ---
 
 ## 🧭 Étapes du TD
@@ -118,25 +118,25 @@ Vous pouvez vous aider du Petstore (https://petstore.swagger.io/) ainsi que de S
 Exporter la collection Postman puis l'ajouter à la racine de votre projet.
 Pousser l'ensemble de vos travaux (collection Postman comprise) sur votre repo distant.
 
-**⚠️ Travaux minimal à rendre sur votre repo Git pour le TD1 ⚠️** 
+**⚠️ Travail minimal à rendre sur votre repo Git pour le TD1 ⚠️** 
 - **Collection postman** fonctionnelle avec les 5 endpoints :
-  - GET /task/{id}
-  - GET /task
-  - POST /task
-  - PUT /task/{id}
-  - DELETE /task/{id}
+  - GET /tasks/{id}
+  - GET /tasks
+  - POST /tasks
+  - PUT /tasks/{id}
+  - DELETE /tasks/{id}
 - **Swagger** avec les endpoints 5 suivants :
-  - GET /task/{id}
-  - GET /task
-  - POST /task
-  - PUT /task/{id}
-  - DELETE /task/{id}
+  - GET /tasks/{id}
+  - GET /tasks
+  - POST /tasks
+  - PUT /tasks/{id}
+  - DELETE /tasks/{id}
 - **Projet** fonctionnel avec les 5 endpoints suivants : 
-  - GET /task/{id}
-  - GET /task
-  - POST /task
-  - PUT /task/{id}
-  - DELETE /task/{id}
+  - GET /tasks/{id}
+  - GET /tasks
+  - POST /tasks
+  - PUT /tasks/{id}
+  - DELETE /tasks/{id}
   
 **Le TD peut être terminé en dehors du cours.**
 
@@ -145,8 +145,8 @@ Pousser l'ensemble de vos travaux (collection Postman comprise) sur votre repo d
 ---
 
 ## Étapes bonus
-- Implémenter un endpoint **DELETE /task** (supprime toutes les tâches). Compléter la collection Postman ainsi que le Swagger.
-- Implémenter un endpoint **GET /task/count** (retourne le nombre total de tâches sous la forme d'un entier). Compléter la collection Postman ainsi que le Swagger.
+- Implémenter un endpoint **DELETE /tasks** (supprime toutes les tâches). Compléter la collection Postman ainsi que le Swagger.
+- Implémenter un endpoint **GET /tasks/count** (retourne le nombre total de tâches sous la forme d'un entier). Compléter la collection Postman ainsi que le Swagger.
 - Ajouter des **logs** dédiés (niveau DEBUG) sur la création/suppression.
 
 ---

@@ -1,0 +1,7 @@
+$kind: http-request
+name: /tasks
+url: http://localhost:8080/tasks?todo=false
+method: GET
+queryParams:
+  todo: "false"
+order: 3000

@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+    title: TODO API
+    version: 1.0.0
+    description: >
+        API de gestion d'une TODO List.
+servers:
+    -   url: http://localhost:8080
+        description: Serveur local de développement
+
+tags:
+    -   name: tasks
+        description: Opérations sur les tâches
+
+paths:
+    /tasks:
+        post:
+            tags: [ tasks ]
+            summary: Créer une tâche
+            operationId: createTask
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Task'
+            responses:
+                '201':
+                    description: Tâche créée avec succès
+                    headers:
+                        Location:
+                            description: URL de la ressource créée
+                            schema:
+                                type: string
+                                example: /tasks/1
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+
+    /tasks/{id}:
+        parameters:
+            -   in: path
+                name: id
+                required: true
+                description: Identifiant numérique de la tâche
+                schema:
+                    type: integer
+                    minimum: 1
+        get:
+            tags: [ tasks ]
+            summary: Récupérer une tâche
+            description: Récupérer une tâche par son identifiant
+            operationId: getTaskById
+            responses:
+                '200':
+                    description: Tâche trouvée avec succès
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                '404':
+                    description: Tâche non trouvée
+components:
+    schemas:
+        Task:
+            type: object
+            description: Représentation d'une tâche
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                title:
+                    type: string
+                    nullable: false
+                    example: Acheter du lait
+                description:
+                    type: string
+                    nullable: true
+                    example: 2L demi-écrémé
+                done:
+                    type: boolean
+                    nullable: false
+                    example: false
+            required:
+                - id
+                - title
