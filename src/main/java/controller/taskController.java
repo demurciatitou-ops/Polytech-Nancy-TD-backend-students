@@ -1,13 +1,12 @@
-package com.example.todoapp;
+package controller;
 
+import util.JsonUtils;
+import model.Task;
+import DAO.TaskDao;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,28 +14,13 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.lang.Boolean.parseBoolean;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.nonNull;
 
-/**
- * Main class of the application. Managing routing and HTTP layer.
- */
-public class Application {
+public class taskController {
 
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
     private static final Pattern ID_PATH = Pattern.compile("^/tasks/([0-9]+)$");
     private static final TaskDao dao = new TaskDao();
-
-    public static void main(String[] args) throws Exception {
-        log.info("In-memory repository initialised");
-
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/tasks", Application::handleTasks);
-        server.setExecutor(null);
-        server.start();
-        log.info("HTTP server started on http://localhost:8080");
-    }
 
     private static void sendResponse(HttpExchange exchange, int status, String json) throws IOException {
         if(nonNull(json)) {
@@ -52,7 +36,7 @@ public class Application {
         }
     }
 
-    private static void handleTasks(HttpExchange exchange) throws IOException {
+    public static void handleTasks(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
         //region Manage POST /tasks
@@ -110,6 +94,7 @@ public class Application {
         }
         //endregion
 
+        //region Manage PUT/tasks/{id}
         if ("PUT".equals(method) && m.matches()){
             int id = Integer.parseInt((m.group(1)));
             Task input = JsonUtils.deserialize(new String(exchange.getRequestBody().readAllBytes(), UTF_8), Task.class);
@@ -127,6 +112,7 @@ public class Application {
                 sendResponse(exchange, 204, null);
             }
         }
+        // endregion
 
         // Otherwise → 404
         sendResponse(exchange, 404, null);
@@ -149,4 +135,3 @@ public class Application {
         return params;
     }
 }
-

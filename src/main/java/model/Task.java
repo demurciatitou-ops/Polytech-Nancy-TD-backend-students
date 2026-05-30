@@ -1,4 +1,4 @@
-package com.example.todoapp;
+package model;
 
 /**
  * Task model.

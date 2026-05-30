@@ -1,4 +1,6 @@
-package com.example.todoapp;
+package DAO;
+
+import model.Task;
 
 import java.util.*;
 

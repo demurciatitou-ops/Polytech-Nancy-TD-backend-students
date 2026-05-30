@@ -37,6 +37,27 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Task'
+        get:
+            tags: [ tasks ]
+            summary: Récupérer toutes les tâches
+            description: Récupérer toutes les tâches ou seulement celles qui sont à faire
+            operationId: getAllTask
+            parameters:
+                -   in: query
+                    name: todo
+                    required: false
+                    description: indique si il faut toutes les tâche ou seulement celles qui reste à faire
+                    schema:
+                        type: boolean
+            responses:
+                '200':
+                    description: Tâches trouvées avec succès
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                '404':
+                    description: Tâches non trouvées
 
     /tasks/{id}:
         parameters:
@@ -61,6 +82,44 @@ paths:
                                 $ref: '#/components/schemas/Task'
                 '404':
                     description: Tâche non trouvée
+            
+        put:
+            tags: [ tasks ]
+            summary: modifier une tâche
+            description: modifier la tache id
+            operationId: putTaskById
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Task'
+            responses:
+                '200':
+                    description: Tâches modifiée avec succès
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                '404':
+                    description: Tâches non trouvées
+
+        delete:
+            tags: [ tasks ]
+            summary: supprimer une tâche
+            description: supprimer la tache par son identifiant
+            operationId: delTaskById
+            responses:
+                '200':
+                    description: Tâches supprimer avec succès
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                '404':
+                    description: Tâches non supprimer
+
+
 components:
     schemas:
         Task:
@@ -72,7 +131,7 @@ components:
                     example: 1
                 title:
                     type: string
-                    nullable: true
+                    nullable: false
                     example: Acheter du lait
                 description:
                     type: string
@@ -80,8 +139,10 @@ components:
                     example: 2L demi-écrémé
                 done:
                     type: boolean
-                    nullable: true
+                    nullable: false
                     example: false
             required:
                 - id
                 - title
+
+

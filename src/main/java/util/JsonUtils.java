@@ -1,4 +1,4 @@
-package com.example.todoapp;
+package util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
